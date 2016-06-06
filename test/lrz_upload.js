@@ -105,17 +105,16 @@ function createUpload(opt) {
         fileListArray = [];
         fileIndex = 0;
         var Filequeue = this.files;
-        var limitLen=null;
+        var limitLen = null;
 
         if (Filequeue.length) {
             //限制长度
-            if(Filequeue.length<maxLength){
-              limitLen=Filequeue.length-1;
+            if (Filequeue.length < maxLength) {
+                limitLen = Filequeue.length - 1;
+            } else {
+                limitLen = maxLength;
             }
-            else{
-                limitLen=maxLength;
-            }
-            for (var i = 0; i <limitLen; i++) {
+            for (var i = 0; i < limitLen; i++) {
 
                 //判断已经上传的队列是否包含新添加的文件
                 var inObject = function() {
@@ -169,7 +168,7 @@ function createUpload(opt) {
             .then(function(rst) {
                 SendData(rst, index)
                 return rst;
-            }, function() {
+            }, function(rst) {
                 if (typeof commenApi != "undefined") {
                     commenApi.alertTip({
                         tit: "图片上传提示",
@@ -178,15 +177,16 @@ function createUpload(opt) {
                 } else {
                     alert("上传文件过大,请上传" + fileSingleSizeLimit + "M以下的图片");
                 }
+                return rst;
             }).always(function(rst) {
-                var completeIndex = null;
-                var fileId = fileListArray[index].fileID;
-                $(wrapDom).find(listDom).each(function(index, elem) {
-                    if ($(this).attr("id") == fileId) {
-                        completeIndex = index;
-                    }
-                })
-                $(wrapDom).find(listDom).eq(completeIndex).find(progress).hide();
+                // var completeIndex = null;
+                // var fileId = fileListArray[index].fileID;
+                // $(wrapDom).find(listDom).each(function(index, elem) {
+                //     if ($(this).attr("id") == fileId) {
+                //         completeIndex = index;
+                //     }
+                // })
+                // $(wrapDom).find(listDom).eq(completeIndex).find(progress).hide();
             });
     }
     //gif格式化数据-----------------------------------------------------
@@ -195,6 +195,7 @@ function createUpload(opt) {
         formData.append("file", data);
         return formData;
     }
+
     //上传到后端前添加dom-------------------------------------------------
     function beforeUploadImgAddDom(index) {
         $(picker).before(uploadDom);
@@ -212,13 +213,15 @@ function createUpload(opt) {
         //如果imgType是gif就跳过图片压缩直接发送数据给后端
         if (fileListArray[index].imgType == "git") {
             beforeUploadImgAddDom(index);
-            SendData("0", index)
+            SendData("0", index);
+
         } else {
             CreateCavansURL(index);
         }
     }
     //上传成功状态同步DOM
-    function statusSuccess(fileId,formDatas) {
+    function statusSuccess(fileId, formDatas) {
+        var successIndex = null;
         $(wrapDom).find(listDom).each(function(index) {
             if ($(this).attr("id") == fileId) {
                 successIndex = index;
@@ -241,6 +244,17 @@ function createUpload(opt) {
         $(wrapDom).find(listDom).eq(errorIndex).find(dele).css("display", "block");
         $(wrapDom).find(listDom).eq(errorIndex).find(progress).hide();
     }
+    //不管上传成功与否都会隐藏进度条
+    function hideProgressbar(index) {
+        var completeIndex = null;
+        var fileId = fileListArray[index].fileID;
+        $(wrapDom).find(listDom).each(function(index, elem) {
+            if ($(this).attr("id") == fileId) {
+                completeIndex = index;
+            }
+        })
+        $(wrapDom).find(listDom).eq(completeIndex).find(progress).hide();
+    }
     //发送base64数据-------------------------------------
     function SendData(rst, index) {
         var fileId = fileListArray[index].fileID;
@@ -258,7 +272,7 @@ function createUpload(opt) {
                     imgManage(fileIndex);
                     // console.log(fileIndex)
                 }
-                statusSuccess(fileId,formDatas);
+                statusSuccess(fileId, formDatas);
                 //拼接已经上传的图片路径
                 if (fileUrlString.length == 0) {
                     fileUrlString += formDatas.url;
@@ -284,6 +298,7 @@ function createUpload(opt) {
                 }
                 statusError(fileId);
             }
+            hideProgressbar(index);
         };
 
         xhr.onerror = function(e) {
@@ -301,6 +316,7 @@ function createUpload(opt) {
                 alert("上传失败")
             }
             statusError(fileId);
+            hideProgressbar(index);
         };
 
         xhr.upload.onprogress = function(e) {
