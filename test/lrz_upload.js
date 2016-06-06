@@ -110,7 +110,7 @@ function createUpload(opt) {
         if (Filequeue.length) {
             //限制长度
             if (Filequeue.length < maxLength) {
-                limitLen = Filequeue.length - 1;
+                limitLen = Filequeue.length;
             } else {
                 limitLen = maxLength;
             }
@@ -144,7 +144,7 @@ function createUpload(opt) {
                 }
 
             }
-            // console.log(fileListArray);
+            console.log(fileListArray);
             imgManage(fileIndex);
 
         }
