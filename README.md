@@ -1,89 +1,38 @@
-[![Build Status](https://travis-ci.org/think2011/localResizeIMG.svg?branch=master)](https://travis-ci.org/think2011/localResizeIMG)
-[![npm version](https://img.shields.io/npm/v/lrz.svg)](https://www.npmjs.com/package/lrz)
-[![npm](https://img.shields.io/npm/l/express.svg)]()
-
-# 演示一下
-
-![](http://think2011.github.io/localResizeIMG/test/demo.gif)
-
-# 自己试试
-
-![](https://raw.github.com/think2011/localResizeIMG/master/test/qrcode.png)
-
-
-[点我直接进入演示页面](http://think2011.github.io/localResizeIMG/test/)
-
-# 说明
-在客户端压缩好要上传的图片可以节省带宽更快的发送给后端，特别适合在移动设备上使用。
-
-# 为什么需要
-
-1. 已踩过很多坑，经过几个版本迭代，以及很多很多网友的反馈帮助、机型测试
-    * 图片扭曲、某些设备不自动旋转图片方向，没有jpeg压缩算法..
-    * 不支持new Blob,formData构造的文件size为0..
-    * 还有某些机型和浏览器（例如QQX5浏览器）莫名其妙的BUG..
-    
-2. 按需加载（会根据对应设备自动异步载入JS文件，节省不必要带宽）
-
-3. 原生JS编写，不依赖例如`jquery`等第三方库，支持AMD or CMD规范。
-
-> 尽管如此，在某些 `Android` 下依然有莫名其妙的问题，在您使用前，请一定大致浏览下 [issues](https://github.com/think2011/localResizeIMG/issues)
-
-# 如何获取
-
-通过以下方式都可以下载：
-
-1. 执行`npm i lrz`（推荐）
-2. 执行`bower install lrz`
+多文件上传功能依赖jquery，所以需要先引入jquery插件，后期有时间考虑用原生代替避免多引入一个文件
 
 接着在页面中引入
 ```html
 <script src="./dist/lrz.bundle.js"></script>
+<script src="./dist/lrz_upload.js"></script>
 ```
 
 # 如何使用
 
 ### 方式1:
-
-如果您的图片来自用户拍摄或者上传的，您需要一个`input file`来获取图片。
-
-```html
-<input id="file" type="file" accept="image/*" />
-```
-
-接着通过change事件可以得到用户选择的图片
-```js
-document.querySelector('#file').addEventListener('change', function () {
-	lrz(this.files[0])
-        .then(function (rst) {
-            // 处理成功会执行
-            console.log(rst);
-        })
-        .catch(function (err) {
-            // 处理失败会执行
-        })
-        .always(function () {
-            // 不管是成功失败，都会执行
-        });
+js:
+createUpload({
+     picker: "#picker",//上传按钮
+     otherBtn: ["#j-addFile"], //新增上传按钮,暂时只能ID,这里默认是 ["#j-addFile"]
+    maxLength: "5", //限制上传数量
+    multiple: "false", //允许多选，㈠如果需要禁止多选去掉html文件上传标签的multiple="multiple"属性
+    fileSingleSizeLimit: "2",//限制上传个数
+   server:""//后端接口
 });
-```
 
-### 方式2：
+git文件如果小于150k原文件上传，超过150k通过canvas压缩成jpeg上传，如果需要修改看源代码，暂时不对外提供接口
+更多可修参数查看test/lrz_upload.js文件，多余参数会后续删除
 
-如果您的图片不是来自用户上传的，那么也可以直接传入图片路径。
-
-```js
-lrz('./xxx/xx/x.png')
-        .then(function (rst) {
-            // 处理成功会执行
-        })
-        .catch(function (err){
-            // 处理失败会执行
-        })
-        .always(function () {
-            // 不管是成功失败，都会执行
-        });
-```
+html[HTML结构可自行修改，这里不做解释]:
+    <div class="up_box" id="hasUpList">
+        <div class="up_list  last" id="picker">
+            <span class="vertal"></span>
+            <span class="horizontal"></span>
+        </div>
+        <div class="up_tip" id="up_tip">
+            上传文件失败
+        </div>
+    </div>
+    <input type="file" name="file" id="file" multiple="multiple" accept="image/*" style="display:none">㈠
 
 # 后端处理
 
