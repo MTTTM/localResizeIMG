@@ -1,3 +1,11 @@
+原插件只有提供单个文件上传demo，没有对多文件上传和git上传特别处理，所有我在原插件的基础上再次封装依次添加一下功能：
+ 1.多文件上传
+ 2.多文件上传状态监听
+ 3.git文件分别处理
+ 4.上传大小限制
+ 5.上传个数限制
+ 6.多按钮上传
+
 多文件上传功能依赖jquery，所以需要先引入jquery插件，后期有时间考虑用原生代替避免多引入一个文件
 
 接着在页面中引入
@@ -15,9 +23,9 @@ createUpload({
      picker: "#picker",//上传按钮
      otherBtn: ["#j-addFile"], //新增上传按钮,暂时只能ID,这里默认是 ["#j-addFile"]
      maxLength: "5", //限制上传数量
-    multiple: "false", //允许多选，㈠如果需要禁止多选去掉html文件上传标签的multiple="multiple"属性
-    fileSingleSizeLimit: "2",//限制上传个数
-    server:""//后端接口
+     multiple: "false", //允许多选，㈠如果需要禁止多选去掉html文件上传标签的multiple="multiple"属性
+     fileSingleSizeLimit: "2",//限制上传个数
+     server:""//后端接口
    
 });
 
@@ -25,8 +33,9 @@ git文件如果小于150k原文件上传，超过150k通过canvas压缩成jpeg�
 更多可修参数查看test/lrz_upload.js文件，多余参数会后续删除
 
 html[HTML结构可自行修改，这里不做解释]:
-    <div class="up_box" id="hasUpList">
-        <div class="up_list  last" id="picker">
+```html
+       <div class="up_box" id="hasUpList">
+         <div class="up_list  last" id="picker">
             <span class="vertal"></span>
             <span class="horizontal"></span>
         </div>
@@ -35,7 +44,7 @@ html[HTML结构可自行修改，这里不做解释]:
         </div>
     </div>
     <input type="file" name="file" id="file" multiple="multiple" accept="image/*" style="display:none">㈠
-
+```
 # 后端处理
 
 [后端处理请查看WIKI。](https://github.com/think2011/localResizeIMG/wiki)
