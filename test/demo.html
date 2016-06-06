@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html style="font-size: 345%;">
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>lrz_uploader 多文件上传</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="full-screen" content="yes">
+    <meta name="x5-fullscreen" content="true">
+    <style>
+    /*上传图片*/
+    
+    .up_box {
+        padding: 0 0 0.28rem 0;
+        font-size: 0;
+        text-align: center;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .up_box:after {
+        content: "";
+        display: block;
+        clear: left;
+    }
+    
+    .up_box .up_tip {
+        line-height: 0.3rem;
+        font-size: 0.2rem;
+        color: #b8b8b8;
+        display: none;
+    }
+    
+    .up_list {
+        position: relative;
+        width: 1.3rem;
+        height: 1.3rem;
+        display: inline-block;
+        font-size: 12px;
+        margin-top: 0.28rem;
+    }
+    
+    .up_list + .up_list {
+        margin-left: 0.3rem;
+    }
+    
+    .up_list .dele {
+        display: none;
+        position: absolute;
+        font-size:0.24rem;
+        line-height: 0.48rem;
+        color:#fff;
+        width: 0.48rem;
+        height: 0.48rem;
+        right: 0.07rem;
+        top: 0.07rem;
+        cursor: pointer;
+        overflow: hidden;
+        background: rgba(0,0,0,.5);
+        border-radius:100%;
+    }
+    
+    .up_list .prepres {
+        position: absolute;
+        left: 0.1rem;
+        bottom: 0.15rem;
+        width: 1rem;
+        height: 0.1rem;
+        background: rgba(99, 103, 105, 0.5);
+        border-radius: 0.1rem;
+        -webkit-transition: all .2s;
+        transition: all .2s;
+    }
+    
+    .up_list .prepres span {
+        height: 0.1rem;
+        display: block;
+        position: absolute;
+        left: 0;
+        background: #ebeaea;
+        border-radius: 0.1rem;
+    }
+    
+    .up_list input[type="file"] {
+        visibility: hidden;
+    }
+    
+    .up_list {
+        float: left;
+        margin-left: 0.3rem;
+    }
+    
+    .last {
+        position: relative;
+        border: 2px dotted #d4d4d4;
+        border-radius: 10%;
+        display: inline-block;
+    }
+    
+    .last span {
+        border-radius: 30%;
+        cursor: pointer;
+    }
+    
+    .up_list .vertal {
+        width: 0.05rem;
+        height: 0.48rem;
+        position: absolute;
+        left: 50%;
+        margin-left: -0.025rem;
+        top: 50%;
+        margin-top: -0.24rem;
+        background: #d4d4d4;
+    }
+    
+    .up_list .horizontal {
+        height: 0.05rem;
+        width: 0.48rem;
+        position: absolute;
+        left: 50%;
+        margin-left: -0.24rem;
+        top: 50%;
+        margin-top: -0.025rem;
+        background: #d4d4d4;
+    }
+    
+    .img {
+        box-sizing: box;
+        display: block;
+        width: 1.3rem;
+        height: 1.3rem;
+        color: #fff;
+        font-size: 0.2rem;
+        text-align: center;
+        line-height: 1.3rem;
+        background-size: contain;
+        background-repeat: no-repeat;
+        border-radius: 10px;
+        background-position: center center;
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+    </style>
+</head>
+
+<body>
+    <div class="up_box" id="hasUpList">
+        <div class="up_list  last" id="picker">
+            <span class="vertal"></span>
+            <span class="horizontal"></span>
+        </div>
+        <div class="up_tip" id="up_tip">
+            上传文件失败
+        </div>
+    </div>
+    <input type="file" name="file" id="file" multiple="multiple" accept="image/*" style="display:none">
+    <script src="jquery-1.8.3.min.js"></script>
+    <script src="../dist/lrz.bundle.js?v=7f547f9"></script>
+    <script src="lrz_upload.js"></script>
+    <script type="text/javascript">
+    createUpload({
+        picker: "#picker",
+        uploaderName: "upload",
+        maxLength: "1", //限制上传数量
+        multiple: "false", //允许多选
+        fileSingleSizeLimit: "2",
+        server: "?ct=upload&ac=upload_img&img_id=file"
+    });
+    </script>
+</body>
+
+</html>
