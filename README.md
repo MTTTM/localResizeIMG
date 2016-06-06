@@ -49,7 +49,7 @@ html[HTML结构可自行修改，这里不做解释]:
 ```
 
 
-#原插件参考一下：
+#原插件参考以下：
 # 后端处理
 
 [后端处理请查看WIKI。](https://github.com/think2011/localResizeIMG/wiki)
