@@ -11,12 +11,14 @@
 ### 方式1:
 js:
 createUpload({
+
      picker: "#picker",//上传按钮
      otherBtn: ["#j-addFile"], //新增上传按钮,暂时只能ID,这里默认是 ["#j-addFile"]
-    maxLength: "5", //限制上传数量
+     maxLength: "5", //限制上传数量
     multiple: "false", //允许多选，㈠如果需要禁止多选去掉html文件上传标签的multiple="multiple"属性
     fileSingleSizeLimit: "2",//限制上传个数
-   server:""//后端接口
+    server:""//后端接口
+   
 });
 
 git文件如果小于150k原文件上传，超过150k通过canvas压缩成jpeg上传，如果需要修改看源代码，暂时不对外提供接口
