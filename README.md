@@ -1,11 +1,12 @@
 原插件只有提供单个文件上传demo，没有对多文件上传和git上传特别处理，所有我在原插件的基础上再次封装依次添加一下功能：
+```html
  1.多文件上传
  2.多文件上传状态监听
  3.git文件分别处理
  4.上传大小限制
  5.上传个数限制
  6.多按钮上传
-
+```
 多文件上传功能依赖jquery，所以需要先引入jquery插件，后期有时间考虑用原生代替避免多引入一个文件
 
 接着在页面中引入
@@ -45,6 +46,8 @@ html[HTML结构可自行修改，这里不做解释]:
     </div>
     <input type="file" name="file" id="file" multiple="multiple" accept="image/*" style="display:none">㈠
 ```
+
+#原插件参考一下：
 # 后端处理
 
 [后端处理请查看WIKI。](https://github.com/think2011/localResizeIMG/wiki)
