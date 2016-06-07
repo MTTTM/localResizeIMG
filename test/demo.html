@@ -48,17 +48,17 @@
     .up_list .dele {
         display: none;
         position: absolute;
-        font-size:0.24rem;
+        font-size: 0.24rem;
         line-height: 0.48rem;
-        color:#fff;
+        color: #fff;
         width: 0.48rem;
         height: 0.48rem;
         right: 0.07rem;
         top: 0.07rem;
         cursor: pointer;
         overflow: hidden;
-        background: rgba(0,0,0,.5);
-        border-radius:100%;
+        background: rgba(0, 0, 0, .5);
+        border-radius: 100%;
     }
     
     .up_list .prepres {
@@ -153,6 +153,7 @@
             上传文件失败
         </div>
     </div>
+    <button id="j-addFile" type="button">第二个上传按钮</button>
     <input type="file" name="file" id="file" multiple="multiple" accept="image/*" style="display:none">
     <script src="jquery-1.8.3.min.js"></script>
     <script src="../dist/lrz.bundle.js?v=7f547f9"></script>
@@ -161,9 +162,10 @@
     createUpload({
         picker: "#picker",
         uploaderName: "upload",
-        maxLength: "1", //限制上传数量
+        maxLength: "3", //限制上传数量
         multiple: "false", //允许多选
         fileSingleSizeLimit: "2",
+        otherBtn: ["#j-addFile"], //只能ID,这里默认是 ["#j-addFile"]
         server: "?ct=upload&ac=upload_img&img_id=file"
     });
     </script>

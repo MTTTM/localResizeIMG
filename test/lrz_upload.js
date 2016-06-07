@@ -37,8 +37,9 @@ function createUpload(opt) {
         width: "",
         height: 950,
         quality: 0.7,
-        successCallback: function() {}, //成功回调
-        delefileCallback: function() {} //删除回调
+        successCallback: function() {}, //上传成功后返回的json格式文件
+        errorCallback:function(){},//失败回调,接收失败文件的队列ID
+        delefileCallback: function() {}, //删除回调,接受删除的文件对象和队列ID
     }
 
     var opts = $.extend({}, defaultOpt, opt),
@@ -79,7 +80,7 @@ function createUpload(opt) {
         /*提示弹窗的图片路径*/
         successCallback = opts.successCallback, //成功回调
         delefileCallback = opts.delefileCallback; //删除回调
-
+        errorCallback=opts.errorCallback;
 
     var fileUrlString = ""; //添加成功的文件路径拼接
     var fileListArray = []; //已经上传了的图片列表,每次上传都会重置为0
@@ -240,6 +241,7 @@ function createUpload(opt) {
                 errorIndex = index;
             }
         })
+        errorCallback(fileId);
         $(wrapDom).find(listDom).eq(errorIndex).find(txt).html("上传失败");
         $(wrapDom).find(listDom).eq(errorIndex).find(dele).css("display", "block");
         $(wrapDom).find(listDom).eq(errorIndex).find(progress).hide();
@@ -274,13 +276,13 @@ function createUpload(opt) {
                 }
                 statusSuccess(fileId, formDatas);
                 //拼接已经上传的图片路径
-                if (fileUrlString.length == 0) {
-                    fileUrlString += formDatas.url;
-                } else {
-                    fileUrlString += "," + formDatas.url;
-                }
-                //可以通过回调把上传成功的图片路径塞到指定input
-                successCallback(fileUrlString);
+                // if (fileUrlString.length == 0) {
+                //     fileUrlString += formDatas.url;
+                // } else {
+                //     fileUrlString += "," + formDatas.url;
+                // }
+                //可以通过回调把上传成功的图片路径
+                successCallback(formDatas);
             } else {
                 // 处理其他情况
                 if (fileIndex < fileListArray.length - 1) {
@@ -345,6 +347,7 @@ function createUpload(opt) {
     $(wrapDom).on("click", dele, function() {
         delefileCallback($(wrapDom).find(uploadDomClass).index($(this).parents(uploadDomClass)));
         var fileID = $(this).parents(uploadDomClass).attr("id");
+          delefileCallback(fileListArray_all[fileID],fileID)
         // console.log(fileListArray_all)
         delete fileListArray_all[fileID];
         // console.log(fileListArray_all)
