@@ -159,26 +159,34 @@
     <script src="../dist/lrz.bundle.js?v=7f547f9"></script>
     <script src="lrz_upload.js"></script>
     <script type="text/javascript">
- createUpload({
-    picker: "#picker",
-    maxLength: "5", //限制上传数量
-    multiple: "false", //允许多选
-    fileSingleSizeLimit: "2",
-   server:"?ct=upload&ac=upload_img&img_id=file",
-   successCallback:function(data){
-    // 接收成功后返回的json格式
-     console.log(data)
+    createUpload({
+        picker: "#picker",
+        maxLength: "5", //限制上传数量
+        multiple: "false", //允许多选
+        fileSingleSizeLimit: "2",
+        server: "?ct=upload&ac=upload_img&img_id=file",
+        successCallback: function(data, queue) {
+            // 接收成功后返回的json格式
+            console.log(data)
+            if (data.error = "oversize") {
+                //删除DOM
+                $("#" + data.fileId).remove();
+                //删除队列
+                delete fileArray[data.fileId];
+                //重置上传文件input
+                $("#file").val("");
+            }
 
-   },
-   delefileCallback:function(data){
-    // 接收删除的文件对象
-     console.log(data)
-   },
-   errorCallback:function(data){
-    //失败文件的标识id,和加入上传后的dom id一致
-   console.log(data)
-   }
-});
+        },
+        delefileCallback: function(data) {
+            // 接收删除的文件对象
+            console.log(data)
+        },
+        errorCallback: function(data) {
+            //失败文件的标识id,和加入上传后的dom id一致
+            console.log(data)
+        }
+    });
     </script>
 </body>
 
