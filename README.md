@@ -28,11 +28,21 @@ js:
      multiple: "false", //允许多选，㈠如果需要禁止多选去掉html文件上传标签的multiple="multiple"属性
      fileSingleSizeLimit: "2",//限制上传个数
      server:""//后端接口,
-    successCallback:function(data){
-    // 接收成功后返回的json格式
-     console.log(data)
+     successCallback: function(data, queue) {
+            // 接收成功后返回的json格式
+            console.log(data)
+            //前端拦截失效，后端返回文件过大提示
+            if (data.error = "oversize") {
+                alert("文件过大");
+                //删除DOM
+                $("#" + data.fileId).remove();
+                //删除队列
+                delete fileArray[data.fileId];
+                //重置上传文件input
+                $("#file").val("");
+            }
 
-    },
+        },
     delefileCallback:function(data){
      // 接收删除的文件对象
      console.log(data)
