@@ -7,7 +7,7 @@ function createUpload(opt) {
         maxLength: 2, //限制上传数量
         multiple: "true", //允许多选
         fileSingleSizeLimit: 1, //上传文件最大限制，
-        server: "这里是上传接口", //上传图片接口
+        server: "/?ct=upload&ac=upload_img", //上传图片接口
 
         /*放置uploadDom的最外层*/
         wrapDom: "#hasUpList",
@@ -37,7 +37,7 @@ function createUpload(opt) {
         width: "",
         height: 950,
         quality: 0.7,
-        successCallback: function() {}, //上传成功后返回的json格式文件
+        successCallback: function() {}, //上传成功后返回的json格式文件和已经上传的文件队列【用于禁止上传同文件】
         errorCallback:function(){},//失败回调,接收失败文件的队列ID
         delefileCallback: function() {}, //删除回调,接受删除的文件对象和队列ID
     }
@@ -82,7 +82,7 @@ function createUpload(opt) {
         delefileCallback = opts.delefileCallback; //删除回调
         errorCallback=opts.errorCallback;
 
-    var fileUrlString = ""; //添加成功的文件路径拼接
+    var fileUrlString = ""; //
     var fileListArray = []; //已经上传了的图片列表,每次上传都会重置为0
     var fileListArray_all = {}; //每次上传都会累积的图片列表，防止重复上传图片
     var fileIndex = 0; //上传文件的索引,每次上传都会重置为0
@@ -145,7 +145,6 @@ function createUpload(opt) {
                 }
 
             }
-            console.log(fileListArray);
             imgManage(fileIndex);
 
         }
@@ -153,7 +152,6 @@ function createUpload(opt) {
 
     //图片压缩处理-----------------------------------
     function CreateCavansURL(index) {
-        console.log("li的index:" + index)
         lrz(fileListArray[index].file, { height: height, width: width, quality: quality })
             .then(function(rst) {
                 var img = new Image();
@@ -282,7 +280,7 @@ function createUpload(opt) {
                 //     fileUrlString += "," + formDatas.url;
                 // }
                 //可以通过回调把上传成功的图片路径
-                successCallback(formDatas);
+                successCallback(formDatas,fileListArray_all);
             } else {
                 // 处理其他情况
                 if (fileIndex < fileListArray.length - 1) {
@@ -337,6 +335,7 @@ function createUpload(opt) {
         } else {
             // 添加参数
             rst.formData.append('fileLen', rst.fileLen);
+            rst.formData.append('fileId', fileId);
             //触发上传
             xhr.send(rst.formData);
         }
