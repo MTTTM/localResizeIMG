@@ -20,14 +20,27 @@
 ###demo参考test/demo.html
 ### 方式1:
 js:
-createUpload({
+  createUpload({
 
      picker: "#picker",//上传按钮
      otherBtn: ["#j-addFile"], //新增上传按钮,暂时只能ID,这里默认是 ["#j-addFile"]
      maxLength: "5", //限制上传数量
      multiple: "false", //允许多选，㈠如果需要禁止多选去掉html文件上传标签的multiple="multiple"属性
      fileSingleSizeLimit: "2",//限制上传个数
-     server:""//后端接口
+     server:""//后端接口,
+    successCallback:function(data){
+    // 接收成功后返回的json格式
+     console.log(data)
+
+    },
+    delefileCallback:function(data){
+     // 接收删除的文件对象
+     console.log(data)
+    },
+    errorCallback:function(data){
+     //失败文件的标识id,和加入上传后的dom id一致,具体查看对应的上传文件后添加的dom
+     console.log(data)
+    }
    
 });
 
